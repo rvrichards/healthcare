@@ -4,6 +4,7 @@ import psycopg2
 import random
 from faker import Faker
 from psycopg2 import Error
+fake = Faker('en_CA')
 print ("Create a Provider and a Facility.")
 print ("---------------------------------")
 print ("This will delete the old tables.")
@@ -25,11 +26,11 @@ try:
     
     cursor.execute(create_table_provider)
     connection.commit()
+    
     print("New table Provider created successfully in PostgreSQL ")
-
     print("Insert data in table Provider")
     print("-----------------------------")
-    fake = Faker('en_CA')
+
     provider_types={ 'Physician', 'Nurse', 'Pharmacist' }
     postgres_insert_query = """ INSERT INTO provider (ID, NAME, ADDRESS, POSTALCODE, TYPE) VALUES (%s,%s,%s,%s,%s)"""
     for x in range(20):
