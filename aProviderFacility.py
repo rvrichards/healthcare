@@ -1,5 +1,5 @@
 #Create a Provider and a Facility
-
+import constant
 import psycopg2
 import random
 from faker import Faker
@@ -33,14 +33,13 @@ try:
 
     provider_types={ 'Physician', 'Nurse', 'Pharmacist' }
     postgres_insert_query = """ INSERT INTO provider (ID, NAME, ADDRESS, POSTAL_CODE, TYPE) VALUES (%s,%s,%s,%s,%s)"""
-    for x in range(20):
+    for x in range(constant.NUMBER_OF_PROVIDERS):
       name=fake.last_name()
       address=fake.street_address()
       postcode=fake.postcode()
       providertype=random.choice(tuple(provider_types))
       record_to_insert = (x+1, name, address, postcode, providertype)
       cursor.execute(postgres_insert_query, record_to_insert)
-      count = cursor.rowcount
       print("Table Provider insert:{}".format(record_to_insert))
       connection.commit()
     print("Table Provider populated with TEST data.")
@@ -65,20 +64,21 @@ try:
     print("Insert data in table Facility")
     print("----------------------------")
     fake = Faker('en_CA')
-    facility = { 'Vancouver General', 'Victoria General', 'Jubilee Hospital', 'Shelborne Clinic', 'UVic Clinic', 'Bay Street', 'Elizabeth Bradshaw', 'Fort Street', 'McKenzie'}
-    facility_types = { 'Hospital',  'Clinic',  'Ambulance Station', 'Abortion Clinic', 'Laboratory', 'Pharmacy'}
 
     postgres_insert_query = """ INSERT INTO facility (ID, NAME, ADDRESS, POSTAL_CODE, TYPE) VALUES (%s,%s,%s,%s,%s)"""
-    for x in range(20):
-      name=random.choice(tuple(facility))
-      address=fake.street_address()
-      postcode=fake.postcode()
-      facilitytype=random.choice(tuple(facility_types))
-      record_to_insert = (x+1, name, address, postcode, facilitytype)
-      cursor.execute(postgres_insert_query, record_to_insert)
-      count = cursor.rowcount
-      print("Table Facility insert:{}".format(record_to_insert))
-      connection.commit()
+
+    for x in range(constant.NUMBER_OF_FACILITIES):
+      for y in range(constant.NUMBER_OF_FAC_TYPES):
+        facid=x*constant.NUMBER_OF_FAC_TYPES + y+1
+        name=constant.FACILITY[x]
+        address=fake.street_address()
+        postcode=fake.postcode()
+        facilitytype=constant.FACILITY_TYPES[y]
+        record_to_insert = (facid, name, address, postcode, facilitytype)
+        cursor.execute(postgres_insert_query, record_to_insert)
+        count = cursor.rowcount
+        print("Table Facility insert:{}".format(record_to_insert))
+        connection.commit()
     print("Table Facility populated with TEST data.")
 
 except (Exception, psycopg2.DatabaseError) as error :

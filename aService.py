@@ -1,5 +1,7 @@
-#Create a Provider and a Facility
-
+# Create a Service
+# A service offered at a facility.
+# ToDo: pull out vars and place at top.
+import constant
 import psycopg2
 import random
 import datetime
@@ -24,7 +26,6 @@ try:
           CLIENT_ID      TEXT,  
           SERVICE_DATE   TEXT,  
           FACILITY_ID    TEXT,  
-          SERVICE_AMOUNT TEXT,
           SERVICE_COST   TEXT,
           PROVIDER_ID    TEXT); '''
     
@@ -36,19 +37,20 @@ try:
     print("-----------------------------")
 
     service_types={'Consult', 'CABG', 'Post op care', 'Eye Exam', 'Insulin', 'Cataract', 'Abortion', 'Consult'}
-    postgres_insert_query = """ INSERT INTO service (ID, NAME, CLIENT_ID, SERVICE_DATE, FACILITY_ID, SERVICE_AMOUNT, SERVICE_COST, PROVIDER_ID) VALUES (%s,%s,%s,%s,%s,%s,%s,%s)"""
-    for x in range(20):
-      name         = random.choice(tuple(service_types))
-      clientid     = x+1
-      servicedate  = datetime.datetime(2018, random.randint(1,12), random.randint(1,28))
-      facilityid   = x+1
-      serviceamount= random.randint(1,10)
-      servicecost  = random.randint(1,10)*random.randint(5,10)
-      providerid   = x+1
-      record_to_insert = (x+1, name, clientid, servicedate, facilityid, serviceamount, servicecost, providerid)
-      cursor.execute(postgres_insert_query, record_to_insert)
-      print("Table Service insert:{}".format(record_to_insert))
-      connection.commit()
+    postgres_insert_query = """ INSERT INTO service (ID, NAME, CLIENT_ID, SERVICE_DATE, FACILITY_ID, SERVICE_COST, PROVIDER_ID) VALUES (%s,%s,%s,%s,%s,%s,%s)"""
+    for a in range(constant.REPEAT_SERVICES):
+      for x in range(constant.NUMBER_OF_PROVIDERS):
+        id           = a*10+x+1
+        name         = random.choice(tuple(constant.SERVICE_TYPES))
+        clientid     = random.randint(1,constant.NUMBER_OF_CLIENTS)
+        servicedate  = datetime.datetime(2018, random.randint(1,12), random.randint(1,28))
+        facilityid   = x+1
+        servicecost  = random.randint(1,10)*random.randint(5,10)
+        providerid   = x+1
+        record_to_insert = (id, name, clientid, servicedate, facilityid, servicecost, providerid)
+        cursor.execute(postgres_insert_query, record_to_insert)
+        print("Table Service insert:{}".format(record_to_insert))
+        connection.commit()
 
     print("Table Service populated with TEST data.")
 
