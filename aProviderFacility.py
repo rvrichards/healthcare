@@ -21,7 +21,7 @@ try:
           (ID INT PRIMARY KEY    NOT NULL,
           NAME           TEXT    NOT NULL,
           ADDRESS        TEXT,  
-          POSTALCODE     TEXT,
+          POSTAL_CODE    TEXT,
           TYPE           TEXT); '''
     
     cursor.execute(create_table_provider)
@@ -32,7 +32,7 @@ try:
     print("-----------------------------")
 
     provider_types={ 'Physician', 'Nurse', 'Pharmacist' }
-    postgres_insert_query = """ INSERT INTO provider (ID, NAME, ADDRESS, POSTALCODE, TYPE) VALUES (%s,%s,%s,%s,%s)"""
+    postgres_insert_query = """ INSERT INTO provider (ID, NAME, ADDRESS, POSTAL_CODE, TYPE) VALUES (%s,%s,%s,%s,%s)"""
     for x in range(20):
       name=fake.last_name()
       address=fake.street_address()
@@ -55,7 +55,7 @@ try:
           (ID INT PRIMARY KEY    NOT NULL,
           NAME           TEXT    NOT NULL,
           ADDRESS        TEXT,  
-          POSTALCODE     TEXT,
+          POSTAL_CODE    TEXT,
           TYPE           TEXT); '''
     
     cursor.execute(create_table_facility)
@@ -68,7 +68,7 @@ try:
     facility = { 'Vancouver General', 'Victoria General', 'Jubilee Hospital', 'Shelborne Clinic', 'UVic Clinic', 'Bay Street', 'Elizabeth Bradshaw', 'Fort Street', 'McKenzie'}
     facility_types = { 'Hospital',  'Clinic',  'Ambulance Station', 'Abortion Clinic', 'Laboratory', 'Pharmacy'}
 
-    postgres_insert_query = """ INSERT INTO facility (ID, NAME, ADDRESS, POSTALCODE, TYPE) VALUES (%s,%s,%s,%s,%s)"""
+    postgres_insert_query = """ INSERT INTO facility (ID, NAME, ADDRESS, POSTAL_CODE, TYPE) VALUES (%s,%s,%s,%s,%s)"""
     for x in range(20):
       name=random.choice(tuple(facility))
       address=fake.street_address()

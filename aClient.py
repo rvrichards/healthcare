@@ -1,5 +1,5 @@
-#Create a cient
-
+# Create a client
+# Creating 20 clients, and ages for birthdates range from 18-99.
 import psycopg2
 import random
 from faker import Faker
@@ -13,21 +13,21 @@ try:
     connection = psycopg2.connect(user = "test", password = "test",  host = "127.0.0.1",  port = "5432", database = "test")
     cursor = connection.cursor()
     
-    # --------------------Clinet------------------------------------------------------------------
-    # --------------------Clinet------------------------------------------------------------------
+    # --------------------Client------------------------------------------------------------------
+    # --------------------Client------------------------------------------------------------------
     drop_table_client = '''DROP TABLE IF EXISTS client'''
     cursor.execute(drop_table_client)
         
     create_table_client = '''CREATE TABLE client
           (ID INT PRIMARY KEY     NOT NULL,
-          FIRSTNAME          TEXT NOT NULL,
-          MIDDLENAME         TEXT         ,
-          LASTNAME           TEXT NOT NULL,
+          FIRST_NAME         TEXT NOT NULL,
+          MIDDLE_NAME        TEXT         ,
+          LAST_NAME          TEXT NOT NULL,
           GENDER             TEXT NOT NULL,
           SIN                TEXT,
           ADDRESS            TEXT,  
-          POSTALCODE         TEXT,
-          BIRTHDATE          TEXT); '''
+          POSTAL_CODE        TEXT,
+          BIRTH_DATE         TEXT); '''
 
     cursor.execute(create_table_client)
     connection.commit()
@@ -36,7 +36,7 @@ try:
     print("Insert data in table Client")
     print("---------------------------")
 
-    postgres_insert_query = """ INSERT INTO client (ID, FIRSTNAME, MIDDLENAME, LASTNAME, GENDER ,SIN, ADDRESS, POSTALCODE, BIRTHDATE) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
+    postgres_insert_query = """ INSERT INTO client (ID, FIRST_NAME, MIDDLE_NAME, LAST_NAME, GENDER ,SIN, ADDRESS, POSTAL_CODE, BIRTH_DATE) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"""
     for x in range(20):
         gender=random.choice(['M','F'])
         if gender == 'M':
